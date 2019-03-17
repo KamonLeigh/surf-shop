@@ -7,7 +7,6 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 
 const index = require('./routes/index');
-const users = require('./routes/users');
 const reviews = require('./routes/reviews')
 const posts = require('./routes/posts')
 
@@ -24,7 +23,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
 app.use('/posts', posts);
 app.use('/posts/:id/reviews', reviews);
 
