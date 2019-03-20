@@ -21,6 +21,20 @@ module.exports = {
     },
     // Posts Create
     async postCreate(req, res, next) {
+        
+        req.body.post.images = [];
+
+        for(const file of req.files){
+           
+            const image = await cloudinary.v2.uploader.upload(file.path);
+           
+           req.body.post.images.push({
+                url: image.secure_url,
+                public_id: image.public_id
+           });
+            
+        }
+        
         // use req.body to create a new post
         const post = await Post.create(req.body.post);
         res.redirect(`/posts/${post.id}`);
