@@ -21,7 +21,7 @@ const posts = require('./routes/posts')
 const app = express();
 
 // Connect to the data base 
-  mongoose.connect(process.env.DB_URL, {useNewUrlParser: true}).then(() => {
+  mongoose.connect(process.env.DB_TEST, {useNewUrlParser: true}).then(() => {
     console.log('Connected to the database');
   }).catch( err => {
     console.log('Error', err);
@@ -32,6 +32,9 @@ const app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+// setup public asserts directory
+app.use(express.static('public'));
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
