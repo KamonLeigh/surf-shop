@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>App</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
+<link rel="stylesheet" href="/stylesheets/post-show.css">
+
+<style>
+    
+</style>
+  </head>
+  <body>
+
+    <%- body -%>
+    <script>
+        var post = <%-JSON.stringify(post)%>;
+        var mapBoxToken = "<%= mapToken %>";
+    </script>
+    <script src="/javascripts/post-show.js"></script>
+   </body>
+</html>

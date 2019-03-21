@@ -8,6 +8,8 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_SECRET
 });
 
+const mapToken = process.env.MAPBOX_KEY;
+
 
 module.exports = {
     // Posts Index
@@ -51,7 +53,7 @@ module.exports = {
     },
     async postShow(req, res, next){
         const post = await Post.findById(req.params.id);
-        res.render('posts/show', {post});
+        res.render('posts/show', {post, mapToken});
     },
 
     async postEdit(req, res, next){
