@@ -49,15 +49,82 @@ module.exports = {
         res.render('posts/edit', { post});
     },
     async postUpdate(req, res, next){
-        // handle any deletion of existing images
-        
+       
+        // find the post by the id
+        const post = await Post.findById(req.params.id);
 
-        // handle uploading of any new images 
-        const post = await Post.findByIdAndUpdate(req.params.id, req.body.post);
+        // check if there's any images for deletions
+        if(req.body.deleteImages && req.body.deleteImages.length){
+            
+            // assign deleteImages from req.body to its own variable
+            const deleteImages = req.body.deleteImages;
+
+          
+            // loop over deleteImages 
+            for(const public_id of deleteImages){
+               
+
+                // delete images from cloudnary
+                 await cloudinary.v2.uploader.destroy(public_id);
+
+                // delete image from post.images 
+
+           
+
+                for(const image of post.images){
+
+                    if(image.public_id === public_id){
+                        
+                        const index = post.images.indexOf(image);
+
+                        post.images.splice(index, 1);
+
+                    }
+                }
+            }
+
+        }
+
+        // check if there are any new images for upload
+        if(req.files){
+
+            for (const file of req.files) {
+
+                const image = await cloudinary.v2.uploader.upload(file.path);
+                    // add images to post.images array
+                    post.images.push({
+                    url: image.secure_url,
+                    public_id: image.public_id
+                });
+
+            }
+
+        }
+
+
+        
+        // update the post with any new properties
+        post.title = req.body.post.title;
+        post.description = req.body.post.description;
+        post.price = req.body.post.price;
+        post.location = req.body.post.location;
+
+        // save the updated post to the database 
+        post.save();
+
+        // redirct page
         res.redirect(`/posts/${post.id}`);
     },
     async postDelete(req, res, next){
-        await Post.findByIdAndRemove(req.params.id);
+        const post = await Post.findById(req.params.id);
+
+        for(const image of post.images){
+
+             await cloudinary.v2.uploader.destroy(image.public_id);
+
+        }
+
+        await post.remove();
         res.redirect('/posts');
     }
 }
