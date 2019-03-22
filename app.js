@@ -12,6 +12,9 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const User = require('./models/user');
 
+const app = express();
+
+
 
 
 // Require routes 
@@ -19,14 +22,13 @@ const index = require('./routes/index');
 const reviews = require('./routes/reviews')
 const posts = require('./routes/posts')
 
-const app = express();
 
 // Connect to the data base 
-  mongoose.connect(process.env.DB_TEST, {useNewUrlParser: true}).then(() => {
-    console.log('Connected to the database');
-  }).catch( err => {
-    console.log('Error', err);
-  });
+mongoose.connect(process.env.DB_TEST, {useNewUrlParser: true}).then(() => {
+  console.log('Connected to the database');
+}).catch( err => {
+  console.log('Error', err);
+});
 
 // use ejs-locals for all ejs templates:
 app.engine('ejs', engine);
@@ -60,6 +62,19 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// set local variables middleware
+app.use(function (req, res, next) {
+  res.locals.title = 'Surf Shop';
+
+  // set success flash message
+  res.locals.success = req.session.success || '';
+  delete req.session.success;
+
+  // set error flash message
+  res.locals.error = req.session.error|| '';
+  delete req.session.error;
+  next();
+});
 // Mount routes
 app.use('/', index);
 app.use('/posts', posts);
@@ -72,13 +87,18 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  // // set locals, only providing error in development
+  // res.locals.message = err.message;
+  // res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  // // render the error page
+  // res.status(err.status || 500);
+  // res.render('error');
+
+  console.log(err);
+  req.session.error = err.message;
+  res.redirect('back');
 });
+
 
 module.exports = app;

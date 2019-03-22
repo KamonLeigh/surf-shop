@@ -16,7 +16,7 @@ module.exports = {
     async postIndex(req, res, next) {
 
         const posts = await Post.find({});
-        res.render('posts/index', {posts});
+        res.render('posts/index', {posts, title: 'Posts Index'});
 
     },
     // Posts New
@@ -49,9 +49,11 @@ module.exports = {
         
         // use req.body to create a new post
         const post = await Post.create(req.body.post);
+        req.session.success = 'Post created successfully';
         res.redirect(`/posts/${post.id}`);
     },
     async postShow(req, res, next){
+        
         const post = await Post.findById(req.params.id);
         res.render('posts/show', {post, mapToken});
     },
