@@ -24,7 +24,9 @@ const posts = require('./routes/posts')
 
 
 // Connect to the data base 
-mongoose.connect(process.env.DB_TEST, {useNewUrlParser: true}).then(() => {
+mongoose.connect(process.env.DB_URL, {
+    useNewUrlParser: true
+  }).then(() => {
   console.log('Connected to the database');
 }).catch( err => {
   console.log('Error', err);
@@ -64,6 +66,15 @@ passport.deserializeUser(User.deserializeUser());
 
 // set local variables middleware
 app.use(function (req, res, next) {
+
+  req.user = {
+    '_id': '5c9667781256602bf51a12bc',
+    'username': 'ian',
+
+  }
+
+  res.locals.currentUser = req.user;
+
   res.locals.title = 'Surf Shop';
 
   // set success flash message
