@@ -160,6 +160,7 @@ module.exports = {
         }
 
         await post.remove();
+        req.session.success = 'Post deleted sucessfully!';
         res.redirect('/posts');
     }
 }
