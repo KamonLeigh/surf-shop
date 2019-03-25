@@ -3,6 +3,26 @@
 <div>Price: <%= post.price %></div>
 <div><%= post.description %></div>
 <div><%= post.location %></div>
+
+<div>
+<% for(let i = 0; i < 5; i++) {%>
+
+    <% if(i < floorRating){ %>
+    <!-- display a full star-->
+        <i class="fas fa-star"></i>
+    <%  } else if((post.avgRating - i) > 0 && ( post.avgRating - i) < 1) { %>
+    <!-- display a half star-->
+        <i class="fas fa-star-half-alt"></i>
+
+   <%} else { %>
+   <!-- display an empty star -->
+        <i class="far fa-star"></i>
+
+    <% } %>
+
+<% } %>
+<%= `${post.avgRating} star${post.avgRating === 1 ? '' : 's'}`%>
+</div>
 <div>
     <% post.images.forEach( image =>  {%>
         <img src="<%=image.url %>" alt="surf board image" width="200pxgi">
@@ -27,7 +47,8 @@
     <!--<input type="number" name="review[rating]" min="1" max="5" step required> -->
         <fieldset class="starability-basic">
             <legend>Rating:</legend>
-            <input type="radio" id="rate0" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
+            <button class="clear-rating" type="button">Clear Rating</button>
+            <input type="radio" id="rate0" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
             <input type="radio" id="rate1" name="review[rating]" value="1" />
             <label for="rate1" title="Terrible">1 star</label>
             <input type="radio" id="rate2" name="review[rating]" value="2" />
@@ -44,7 +65,7 @@
 
 <h3>Reviews</h3>
 <!-- display all reviews-->
-<% console.log(post)%>
+
 <% post.reviews.forEach( (review) => { %>
     <div>
         Author: <%= review.author.username %><br>
@@ -59,7 +80,8 @@
         <textarea name="review[body]" required><%= review.body%></textarea>
         <fieldset class="starability-basic">
             <legend>Rating:</legend>
-            <input type="radio" id="edit-rate0" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
+            <button class="clear-rating" type="button">Clear Rating</button>
+            <input type="radio" id="edit-rate0" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
             <input type="radio" id="edit-rate1" name="review[rating]" value="1" />
             <label for="edit-rate1" title="Terrible">1 star</label>
             <input type="radio" id="edit-rate2" name="review[rating]" value="2" />

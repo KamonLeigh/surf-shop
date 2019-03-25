@@ -10,6 +10,8 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
+const seedPosts = require('./seeds');
+//seedPosts();
 const User = require('./models/user');
 
 const app = express();
@@ -51,6 +53,7 @@ app.use(methodOverride('_method'));
 
 
 
+
 // Configure Passport and Sessions
 app.use(session({
   secret: 'hang ten dude',
@@ -67,11 +70,26 @@ passport.deserializeUser(User.deserializeUser());
 // set local variables middleware
 app.use(function (req, res, next) {
 
+  // req.user = {
+  //   '_id': '5c9667781256602bf51a12bc',
+  //   'username': 'ian',
+
+  // }
+
+  // req.user = {
+  //   '_id': '5c96b0b80181482e5fcafd94',
+  //   'username': 'ian2',
+
+  // }
+
   req.user = {
-    '_id': '5c9667781256602bf51a12bc',
-    'username': 'ian',
+    '_id': '5c99011648ee283b3f4daa50',
+    'username': 'ian3',
 
   }
+
+ 
+
 
   res.locals.currentUser = req.user;
 

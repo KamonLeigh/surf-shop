@@ -15,7 +15,11 @@ module.exports = {
     // Posts Index
     async postIndex(req, res, next) {
 
-        const posts = await Post.find({});
+        const posts = await Post.paginate({}, {
+            page: req.query.page || 1,
+            limit: 10
+        });
+        posts.page = Number(posts.page)
         res.render('posts/index', {posts, title: 'Posts Index'});
 
     },
@@ -63,7 +67,9 @@ module.exports = {
             }
         });
 
-        res.render('posts/show', {post, mapToken});
+        const floorRating = post.calculateAvgRating();
+
+        res.render('posts/show', {post, mapToken, floorRating});
     },
 
     async postEdit(req, res, next){
