@@ -2,10 +2,11 @@
  <h1><%= title %></h1>
  <p>Welcome to <%= title %></p>
  <div id="map"></div>
+ <%console.log(posts)%>
 
+  
  <script>
     mapboxgl.accessToken = "<%= mapBoxToken %>";
-    var posts = { features: <%- JSON.stringify(posts)%>}
- </script>
- <script src="/javascripts/allPostsClusterMap.js"></script>
- 
+    var posts = {features: <%- JSON.stringify(posts) %>};
+</script>
+<script src="/javascripts/allPostsClusterMap.js"></script>

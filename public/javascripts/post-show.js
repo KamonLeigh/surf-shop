@@ -3,7 +3,7 @@ mapboxgl.accessToken = mapBoxToken;
 var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/light-v10',
-    center: post.coordinates,
+    center: post.geometry.coordinates,
     zoom: 7
 });
 
@@ -13,7 +13,7 @@ el.className = 'marker';
 
 // make a marker our location map
 new mapboxgl.Marker(el)
-    .setLngLat(post.coordinates)
+    .setLngLat(post.geometry.coordinates)
     .setPopup(new mapboxgl.Popup({
             offset: 25
         })
