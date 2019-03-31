@@ -47,7 +47,8 @@ module.exports = {
                                 limit:1
                             })
                             .send();
-        req.body.post.geometry = response.body.features[0].geometry
+        req.body.post.geometry = response.body.features[0].geometry;
+        req.body.post.author = req.user._id;
         
         // use req.body to create a new post
        
@@ -75,13 +76,12 @@ module.exports = {
     },
 
     async postEdit(req, res, next){
-        const post = await Post.findById(req.params.id);
-        res.render('posts/edit', { post});
+        res.render('posts/edit');
     },
     async postUpdate(req, res, next){
        
-        // find the post by the id
-        const post = await Post.findById(req.params.id);
+        // destructure post from res.locals
+        const { post } = req.locals;
 
         // check if there's any images for deletions
         if(req.body.deleteImages && req.body.deleteImages.length){
@@ -160,7 +160,7 @@ module.exports = {
         res.redirect(`/posts/${post.id}`);
     },
     async postDelete(req, res, next){
-        const post = await Post.findById(req.params.id);
+        const { post } = res.locals;
 
         for(const image of post.images){
 

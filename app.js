@@ -3,6 +3,7 @@ const createError = require('http-errors');
 const express = require('express');
 const engine = require('ejs-mate');
 const path = require('path');
+const favicon = require('serve-favicon');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const passport = require('passport');
@@ -44,6 +45,7 @@ app.set('view engine', 'ejs');
 // setup public asserts directory
 app.use(express.static('public'));
 
+app.use(favicon(path.join(__dirname,'public', 'favicon.ico')))
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -82,13 +84,11 @@ app.use(function (req, res, next) {
 
   // }
 
-  req.user = {
-    '_id': '5c99011648ee283b3f4daa50',
-    'username': 'ian3',
+  // req.user = {
+  //   '_id': '5c99011648ee283b3f4daa50',
+  //   'username': 'ian3',
 
-  }
-
- 
+  // }
 
 
   res.locals.currentUser = req.user;
