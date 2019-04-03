@@ -2,8 +2,8 @@
 <h1> Edit Post!</h1>
 
 <form action="/posts/<%= post.id %>?_method=PUT" method="POST" id="postEditForm" enctype="multipart/form-data">
-    <p><input type="text" name="post[title]" placeholder="Title" value="<%=post.title %>"></p>
-    <p><input type="text" name="post[price]" placeholder="Price" value="<%=post.price %>"></p>
+    <p><input type="text" step=".01" name="post[title]" placeholder="Title" value="<%=post.title %>"></p>
+    <p><input type="number" name="post[price]" placeholder="Price" value="<%=post.price %>"></p>
     <P>
         <input type="file" id="imageUpLoad" accept="images/*" name="images" multiple>
        <div>

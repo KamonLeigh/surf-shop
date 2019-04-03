@@ -154,7 +154,7 @@ module.exports = {
         post.properties.description = `<strong><a href="/posts/${post._id}">${post.title}</a></strong><p>${post.location}</p><p>${post.description.substring(0, 20)}...</p>`;
 
         // save the updated post to the database 
-        post.save();
+        await post.save();
 
         // redirct page
         res.redirect(`/posts/${post.id}`);

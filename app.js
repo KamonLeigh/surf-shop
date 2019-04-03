@@ -7,7 +7,6 @@ const favicon = require('serve-favicon');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const passport = require('passport');
-const bodyParser = require('body-parser');
 const session = require('express-session');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
@@ -47,8 +46,8 @@ app.use(express.static('public'));
 
 app.use(favicon(path.join(__dirname,'public', 'favicon.ico')))
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));
