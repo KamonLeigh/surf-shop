@@ -2,6 +2,11 @@ const User = require('../models/user');
 const Post = require('../models/post');
 const passport = require('passport');
 const util = require('util');
+const { cloudinary } = require('../cloudinary');
+const { deleteProfileImage} = require('../middleware');
+const crypto = require('crypto');
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
 module.exports = {
@@ -21,9 +26,14 @@ module.exports = {
         res.render('register', {title: 'Register', username:'', email:''});
     },
     async postRegister(req, res, next){
-      
+    
        
         try {
+            if(req.file) {
+              const { secure_url, public_id } = req.file;
+
+              req.body.image = { secure_url, public_id }
+            }
             const user = await User.register(new User(req.body), req.body.password);
             req.login(user, function (err) {
                 if (err) return next(err);
@@ -31,6 +41,7 @@ module.exports = {
                 res.redirect('/');
             });
         } catch (err) {
+            deleteProfileImage(req);
             const {
                 username,
                 email
@@ -90,6 +101,12 @@ module.exports = {
 
         if(username) user.username = username;
         if(email) user.email = email;
+        if(req.file){
+            if(user.image.public_id) await cloudinary.v2.uploader.destroy(user.image.public_id);
+
+            const { secure_url, public_id } = req.file;
+            user.image = { secure_url, public_id };
+        }
 
         await user.save();
 
@@ -97,5 +114,18 @@ module.exports = {
         await login(user);
         req.session.success = 'Profile sucessfully updated!!';
         res.redirect('/profile')
+    },
+
+    getForgotPw(req, res, next){
+
+    },
+    async putForgotPw(req, res, next){
+
+    },
+    async getReset(req, res, next){
+
+    },
+    async putReset(req, res, next){
+        
     }
 }

@@ -1,5 +1,6 @@
 let newPaswordValue;
 let confirmationValue;
+const submit = document.querySelector('.profile--submit');
 const form = document.querySelector('form');
 const newPassword = document.getElementById('new-password');
 const confirmation = document.getElementById('password-confirmation');
@@ -16,17 +17,19 @@ function validatePasswords(message, add, remove){
 }
 
 confirmation.addEventListener('input', e => {
-    e.preventDefault();
+   
     newPasswordValue = newPassword.value;
     confirmationValue = confirmation.value;
 
     if(newPasswordValue !== confirmationValue){
 
         validatePasswords('Passwords must match', 'color-red', 'color-green');
+        submit.setAttribute('disabled', true);
 
     } else {
 
         validatePasswords('Passwords match', 'color-green', 'color-red');
+        submit.removeAttribute('disabled');
 
     }
 });
