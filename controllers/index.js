@@ -6,7 +6,7 @@ const { cloudinary } = require('../cloudinary');
 const { deleteProfileImage} = require('../middleware');
 const crypto = require('crypto');
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY); 
 
 
 module.exports = {
@@ -123,6 +123,7 @@ module.exports = {
         const token = await crypto.randomBytes(20).toString('hex');
         const { email } = req.body
         const user = await User.findOne({email});
+        console.log(user);
 
         if(!user) {
             req.session.error = 'No account with that email could be found'
@@ -147,12 +148,72 @@ module.exports = {
        await sgMail.send(msg);
 
        req.session.success = `An email has been sent to ${email} with further instructions.`;
-       res.redirct('/forgot-password');
+       res.redirect('/forgot-password');
     },
     async getReset(req, res, next){
 
+        const { token } = req.params;
+
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now()}
+            
+        });
+
+        console.log(user)
+
+        if(!user){
+            req.session.error = 'Password reset token is invalid or has expired.';
+            return res.redirect('/forgot-password');
+        }
+
+        res.render('users/reset', { token });
+
     },
     async putReset(req, res, next){
-        
+         const { token } = req.params;
+
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now()}
+        });
+
+        if(!user){
+            req.session.error = 'Password reset token is invalid or has expired.';
+            return res.redirect('/forgot-password');
+        }
+
+        if(req.body.password === req.body.confirm){
+            await user.setPassword(req.body.password);
+
+            user.resetPasswordToken = null;
+            user.resetPasswordExpires = null;
+
+            await user.save();
+
+            const login =  util.promisify(req.login.bind(req));
+
+            await login(user);
+        } else {
+            req.session.error = 'Passwords do not match';
+
+            return res.redirect(`/reset/${token}`);
+        }
+
+        const msg = {
+            from: 'Surf Shop Admin <byronleigh80@gmail.com>',
+            to: user.email,
+            subject: 'Surf Shop - Password Changed',
+            text: `Hello,
+            This email is to confirm that the password for your account has just been changed.
+            If you did not make this change, please hit reply and notify us at once.`.replace(/            /g, '')
+        };
+
+        await sgMail.send(msg);
+
+        req.session.success = 'Password successfully updated!';
+
+        res.redirect('/');
+
     }
 }
