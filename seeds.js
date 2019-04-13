@@ -6,9 +6,10 @@ const cities = require('./cities');
 
 
 async function seedPosts() {
-    await Post.remove({});
+    await Post.deleteMany({});
     for (const i of new Array(600)) {
         const random1000 = Math.floor(Math.random() * 1000);
+        const random5 = Math.floor(Math.random() * 6);
         const title = faker.lorem.word();
         const description = faker.lorem.text();
         const postData = {
@@ -19,6 +20,8 @@ async function seedPosts() {
                 type: 'Point',
                 coordinates: [cities[random1000].longitude, cities[random1000].latitude],
             },
+            price: Math.floor(Math.random() * 1000),
+            avgRating: random5,
             author: '5c70739bedd7a7166f71a0a9'
 
         }
