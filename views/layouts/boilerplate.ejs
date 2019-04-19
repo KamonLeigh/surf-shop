@@ -2,6 +2,8 @@
 <html>
   <head>
     <title><%= title %></title>
+    <!---Include BS4 CDN for development-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' type='text/css' />
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet' />
@@ -11,6 +13,7 @@
   <body>
   	<% include ../partials/navbar %>
   	<% include ../partials/flash-messages %>
-  	<%- body -%>
+    <%- body -%>
+    <script src="/javascripts/post-index.js"></script>
   </body>
 </html>
