@@ -41,38 +41,38 @@
         <legend>Price</legend>
         <label for="min">Min</label>
         <input type="number" id="min"  name="price[min]" min="0"  max="10000" step="1" 
-        placeholder="Min" value="<%= query.price.min%>"
+        placeholder="Min" value="<%= query.price ? query.price.min : ''%>"
         >
          <label for="max">Max</label>
         <input type="number" id="max" name="price[max]" min="0" max="10000" step="1"
-        placeholder="Max" value="<%= query.price.max %>"
+        placeholder="Max" value="<%= query.price ? query.price.max : '' %>"
         >
     </fieldset>
 
     <fieldset>
         <legend>Rating</legend>
         <input type="checkbox" id="zero-stars" value="0"  name="avgRating[0]"
-        <%= query.avgRating.includes('0')% ? 'checked' : ''>
+        <%= query.avgRating && query.avgRating.includes('0')% ? 'checked' : ''>
         >
         <label for="zero-stars"> 0 stars</label>
         <input type="checkbox" id="one-star" value="1" name="avgRating[1]"
-         <%= query.avgRating.includes('1')% ? 'checked' : ''>
+         <%= query.avgRating && query.avgRating.includes('1')% ? 'checked' : ''>
         >
         <label for="one-star">1 star</label>
         <input type="checkbox" id="two-stars" value="2" name="avgRating[2]"
-         <%= query.avgRating.includes('2')% ? 'checked' : ''>
+         <%= query.avgRating && query.avgRating.includes('2')% ? 'checked' : ''>
         >
         <label for="two-stars">2 stars</label>
         <input type="checkbox" id="three-stars" value="3" name="avgRating[3]"
-         <%= query.avgRating.includes('3')% ? 'checked' : ''>
+         <%= query.avgRating && query.avgRating.includes('3')% ? 'checked' : ''>
         >
         <label for="three-stars">3 stars</label>
         <input type="checkbox" id="four-stars" value="4" name="avgRating[4]"
-         <%= query.avgRating.includes('4')% ? 'checked' : ''>
+         <%= query.avgRating && query.avgRating.includes('4')% ? 'checked' : ''>
         >
         <label for="four-stars"> 4 stars</label>
         <input type="checkbox" id="five-stars" value="5" name="avgRating[5]"
-         <%= query.avgRating.includes('5')% ? 'checked' : ''>
+         <%= query.avgRating && query.avgRating.includes('5')% ? 'checked' : ''>
         >
         <label for="five-stars"> 5 stars</label>
     </fieldset>
