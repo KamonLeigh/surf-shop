@@ -18,7 +18,7 @@ module.exports = {
         });
         posts.page = Number(posts.page)
 
-        if(!post.docs.length && res.locals.query) {
+        if(!posts.docs.length && res.locals.query) {
             res.locals.error = 'No results match that query.';
         }
         res.render('posts/index', {

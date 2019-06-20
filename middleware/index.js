@@ -161,7 +161,7 @@ const middleware = {
 
         res.locals.query = req.query;
 
-        queryKeys.splice(queryKeys,indexOf('page'), 1);
+        queryKeys.splice(queryKeys.indexOf('page'), 1);
         const delimiter = queryKeys.length ? '&' : '?';
         res.locals.paginateUrl = req.originalUrl.replace(/(\?|\&)page=\d+/g, '') + `${delimiter}page=`;
 
