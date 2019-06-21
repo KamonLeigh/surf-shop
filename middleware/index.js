@@ -123,14 +123,22 @@ const middleware = {
             }
 
             if(location){
-                const response = await geocodingClient
-                                        .forwardGeocode({
-                                            query: location,
-                                            limit: 1
-                                        })
-                                        .send();
+                let coordinates;
+
+                try {
+                    location = JSON.parse(location);
+                    coordinates = location;
+                } catch(e) {
+
+                    const response = await geocodingClient
+                                            .forwardGeocode({
+                                                query: location,
+                                                limit: 1
+                                            })
+                                            .send();
+                 coordinates = response.body.features[0].geometry.coordinates;
+                }
                 
-                const { coordinates} = response.body.features[0].geometry;
                 let maxDistance = distance || 25;
                 maxDistance *= 1609.34;
                 dbQueries.push({
