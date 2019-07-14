@@ -11,7 +11,7 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
  const seedPosts = require('./seeds');
-//  seedPosts();
+  //seedPosts();
 const User = require('./models/user');
 
 const app = express();
@@ -53,7 +53,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));
 
 
-
+// Add moment to every view 
+app.locals.moment = require('moment');
 
 // Configure Passport and Sessions
 app.use(session({

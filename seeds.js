@@ -22,7 +22,12 @@ async function seedPosts() {
             },
             price: Math.floor(Math.random() * 1000),
             avgRating: random5,
-            author: '5c70739bedd7a7166f71a0a9'
+            author: '5c70739bedd7a7166f71a0a9',
+            images:[
+                {
+                    url: 'https://res.cloudinary.com/devsprout/image/upload/v1561315599/surf-shop/surfboard.jpg'
+                }
+            ]
 
         }
         let post = new Post(postData);

@@ -13,10 +13,12 @@ module.exports = {
     // GET /
     async landingPage(req, res, next){
          
-        const posts = await Post.find({});
+        const posts = await Post.find({}).sort('-_id').exec();
+        const recentPosts = posts.slice(0, 3);
       
         res.render('index', {
             posts,
+            recentPosts,
             mapBoxToken: process.env.MAPBOX_TOKEN,
             title: 'Surf Shop -Home'
         });
